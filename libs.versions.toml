@@ -1,0 +1,27 @@
+[versions]
+minecraft = "1.21.11"
+
+# Fabric
+fabric-loader = "0.18.6"
+fabric-api = "0.141.3+1.21.11"
+
+# EdenMC API
+edenmc-api = "1.0.1-1.21.11"
+
+# Adventure
+adventure-api = "4.26.1"
+adventure-fabric = "6.8.0"
+
+[libraries]
+minecraft = { module = "net.minecraft:minecraft", version.ref = "minecraft" }
+
+fabric-loader = { module = "net.fabricmc:fabric-loader", version.ref = "fabric-loader" }
+fabric-api = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "fabric-api" }
+
+adventure-api = { module = "net.kyori:adventure-api", version.ref = "adventure-api" }
+adventure-fabric = { module = "net.kyori:adventure-platform-fabric", version.ref = "adventure-fabric" }
+
+edenmc-api = { module = "xyz.memothelemo.edenmc:api", version.ref = "edenmc-api" }
+
+[plugins]
+loom = { id = "fabric-loom", version = "1.15-SNAPSHOT" }

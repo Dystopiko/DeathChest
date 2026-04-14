@@ -1,0 +1,108 @@
+import net.fabricmc.loom.task.DownloadTask
+
+plugins {
+    alias(libs.plugins.loom)
+}
+
+def modId = project.property("mod_id").toString()
+def modName = project.property("mod_name").toString()
+def modVersion = project.property("mod_version").toString()
+def mavenGroup = project.property("maven_group").toString()
+def minimumMcVersion = project.property("min_minecraft_version").toString()
+
+base.archivesName.set(modId)
+version = "$modVersion"
+group = mavenGroup
+
+repositories {
+    mavenLocal()
+}
+
+dependencies {
+    // To change the versions, see at `libs.versions.toml` file
+    // Fabric
+    minecraft(libs.minecraft)
+    mappings(loom.officialMojangMappings())
+    modImplementation(libs.fabric.loader)
+
+    // Fabric API
+    modImplementation(libs.fabric.api)
+
+    // EdenMC API
+    modImplementation(libs.edenmc.api)
+
+    // Adventure
+    include(libs.adventure.api)
+    include(libs.adventure.fabric)
+    modImplementation(libs.adventure.api)
+    modImplementation(libs.adventure.fabric)
+}
+
+tasks.jar {
+    from("LICENSE")
+}
+
+tasks.processResources {
+    inputs.property("id", modId)
+    inputs.property("name", modName)
+    inputs.property("version", modVersion)
+
+    filteringCharset = "UTF-8"
+    filesMatching('fabric.mod.json') {
+        expand([
+            mod_id: modId,
+            mod_name: modName,
+            mod_version: modVersion,
+            fabric_loader_version: libs.versions.fabric.loader.get(),
+            min_minecraft_version: minimumMcVersion
+        ])
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = "UTF-8"
+    options.release = 21
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+    withSourcesJar()
+}
+
+tasks.register("downloadEden", DownloadTask) {
+    url = "https://github.com/Dystopiko/eden-minecraft/releases/download/v1.2.5-1.21.11/eden-1.2.5-1.21.11.jar"
+    output = file("run/mods/Eden.jar")
+}
+
+tasks.register("downloadFloodgate", DownloadTask) {
+    url = "https://cdn.modrinth.com/data/bWrNNfkb/versions/81EuNxeZ/Floodgate-Fabric-2.2.6-b60.jar"
+    output = file("run/mods/Floodgate.jar")
+}
+
+tasks.register("downloadFabricKotlin", DownloadTask) {
+    url = "https://cdn.modrinth.com/data/Ha28R6CL/versions/21TRTKmh/fabric-language-kotlin-1.13.10%2Bkotlin.2.3.20.jar"
+    output = file("run/mods/FabricKotlin.jar")
+}
+
+tasks.register("downloadGeyser", DownloadTask) {
+    url = "https://cdn.modrinth.com/data/wKkoqHrH/versions/4Ij9rDq0/geyser-fabric-Geyser-Fabric-2.9.5-b1113.jar"
+    output = file("run/mods/Geyser.jar")
+}
+
+tasks.register("downloadLuckPerms", DownloadTask) {
+    url = "https://cdn.modrinth.com/data/Vebnzrzj/versions/CzCJJMuo/LuckPerms-Fabric-5.5.21.jar"
+    output = file("run/mods/LuckPerms.jar")
+}
+
+tasks.register("downloadRequiredMods").configure {
+    dependsOn(tasks.named("downloadEden"))
+    dependsOn(tasks.named("downloadFabricKotlin"))
+    dependsOn(tasks.named("downloadFloodgate"))
+    dependsOn(tasks.named("downloadGeyser"))
+    dependsOn(tasks.named("downloadLuckPerms"))
+}
+
+tasks.named("runServer").configure {
+    dependsOn(tasks.named("downloadRequiredMods"))
+}
