@@ -3,6 +3,7 @@ package xyz.memothelemo.deathchest.model;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -18,6 +19,7 @@ import xyz.memothelemo.edenmc.api.model.organization.Member;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static xyz.memothelemo.deathchest.DeathChestMod.LOGGER;
@@ -125,7 +127,7 @@ public class DCServerData extends SavedData {
     );
 
     private static final SavedDataType<DCServerData> TYPE = new SavedDataType<>(
-        "death_chests",
+        Objects.requireNonNull(Identifier.tryBuild("death_chests", "server_data")),
         DCServerData::empty,
         CODEC,
         (DataFixTypes) null

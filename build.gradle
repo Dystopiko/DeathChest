@@ -22,20 +22,19 @@ dependencies {
     // To change the versions, see at `libs.versions.toml` file
     // Fabric
     minecraft(libs.minecraft)
-    mappings(loom.officialMojangMappings())
-    modImplementation(libs.fabric.loader)
+    implementation(libs.fabric.loader)
 
     // Fabric API
-    modImplementation(libs.fabric.api)
+    implementation(libs.fabric.api)
 
     // EdenMC API
-    modImplementation(libs.edenmc.api)
+    implementation(libs.edenmc.api)
 
     // Adventure
     include(libs.adventure.api)
     include(libs.adventure.fabric)
-    modImplementation(libs.adventure.api)
-    modImplementation(libs.adventure.fabric)
+    implementation(libs.adventure.api)
+    implementation(libs.adventure.fabric)
 }
 
 tasks.jar {
@@ -61,37 +60,37 @@ tasks.processResources {
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = "UTF-8"
-    options.release = 21
+    options.release = 25
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_21
-    targetCompatibility = JavaVersion.VERSION_21
+    sourceCompatibility = JavaVersion.VERSION_25
+    targetCompatibility = JavaVersion.VERSION_25
     withSourcesJar()
 }
 
 tasks.register("downloadEden", DownloadTask) {
-    url = "https://github.com/Dystopiko/eden-minecraft/releases/download/v1.2.5-1.21.11/eden-1.2.5-1.21.11.jar"
+    url = "https://github.com/Dystopiko/eden-minecraft/releases/download/v1.2.8/eden-1.2.8.jar"
     output = file("run/mods/Eden.jar")
 }
 
-tasks.register("downloadFloodgate", DownloadTask) {
-    url = "https://cdn.modrinth.com/data/bWrNNfkb/versions/81EuNxeZ/Floodgate-Fabric-2.2.6-b60.jar"
-    output = file("run/mods/Floodgate.jar")
-}
-
 tasks.register("downloadFabricKotlin", DownloadTask) {
-    url = "https://cdn.modrinth.com/data/Ha28R6CL/versions/21TRTKmh/fabric-language-kotlin-1.13.10%2Bkotlin.2.3.20.jar"
+    url = "https://cdn.modrinth.com/data/Ha28R6CL/versions/2i87JpYj/fabric-language-kotlin-1.13.11%2Bkotlin.2.3.21.jar?mr_download_reason=standalone&mr_game_version=26.1.2&mr_loader=fabric"
     output = file("run/mods/FabricKotlin.jar")
 }
 
+tasks.register("downloadFloodgate", DownloadTask) {
+    url = "https://cdn.modrinth.com/data/bWrNNfkb/versions/fD4J9lnX/Floodgate-Fabric-2.2.6-b63.jar?mr_download_reason=standalone&mr_game_version=26.1.2&mr_loader=fabric"
+    output = file("run/mods/Floodgate.jar")
+}
+
 tasks.register("downloadGeyser", DownloadTask) {
-    url = "https://cdn.modrinth.com/data/wKkoqHrH/versions/4Ij9rDq0/geyser-fabric-Geyser-Fabric-2.9.5-b1113.jar"
+    url = "https://cdn.modrinth.com/data/wKkoqHrH/versions/q4Pg0AcC/Geyser-Fabric-2.10.0-b1138.jar?mr_download_reason=standalone&mr_game_version=26.1.2&mr_loader=fabric"
     output = file("run/mods/Geyser.jar")
 }
 
 tasks.register("downloadLuckPerms", DownloadTask) {
-    url = "https://cdn.modrinth.com/data/Vebnzrzj/versions/CzCJJMuo/LuckPerms-Fabric-5.5.21.jar"
+    url = "https://cdn.modrinth.com/data/Vebnzrzj/versions/fTIdfb46/LuckPerms-Fabric-5.5.42.jar?mr_download_reason=standalone&mr_game_version=26.1.2&mr_loader=fabric"
     output = file("run/mods/LuckPerms.jar")
 }
 
