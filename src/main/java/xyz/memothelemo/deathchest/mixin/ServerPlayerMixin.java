@@ -135,7 +135,10 @@ public abstract class ServerPlayerMixin implements DcServerPlayer {
         )
     )
     @SuppressWarnings("resource")
-    private void dc$tryPlaceDeathChest(ServerPlayer oldState, boolean bl, CallbackInfo ci) {
+    private void dc$tryPlaceDeathChest(ServerPlayer oldState, boolean restoreAll, CallbackInfo ci) {
+        // restoreFrom is also called when the player jumps into the End portal
+        if (restoreAll) return;
+
         boolean keepInventory = this.level().getGameRules().get(GameRules.KEEP_INVENTORY);
         boolean hasPermissions = DeathChestMod.hasPermissions(oldState);
 
